@@ -1,0 +1,18 @@
+package:
+  name: takehome-assignment
+  dependencies:
+    - arraybuffer-types
+    - console
+    - effect
+    - either
+    - lists
+    - maybe
+    - prelude
+    - tuples
+  test:
+    main: Test.Main
+    dependencies: []
+workspace:
+  packageSet:
+    registry: 62.3.0
+  extraPackages: {}
