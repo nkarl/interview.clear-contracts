@@ -3,9 +3,9 @@ module Tasks.Task01 where
 import Prelude
 
 import Data.ArrayBuffer.ArrayBuffer (empty)
-import Data.ArrayBuffer.Typed (toString, whole)
+import Data.ArrayBuffer.Typed (toString, whole, foldr)
 import Data.ArrayBuffer.Types (Uint8Array)
-import Data.Either (Either(..))
+import Data.UInt (toInt)
 import Effect (Effect)
 
 {-
@@ -21,6 +21,7 @@ import Effect (Effect)
     2. [x] define a function `toAsciiString :: AsiiText -> Effect String`
         - [ ] with tests
     3. [ ] define a function `isValidAsciiText :: ArrayView Uint8 -> Either ErrorMsg AsciiText`
+        - [ ] use foldl
         - [ ] with tests
 -}
 
@@ -38,8 +39,16 @@ toAsciiString = toString
 type ErrorMsg = String
 
 -- | Takes a packed Uint8 array and check that its celluar values are bound between 0 and 127.
-isValidAsciiText :: Uint8Array -> Either ErrorMsg AsciiText
-isValidAsciiText _ = Left "the function isValidAsciiText not implemented" -- TODO: implement checks
+--isValidAsciiText :: Uint8Array -> Either ErrorMsg AsciiText
+--isValidAsciiText _ = Left "the function isValidAsciiText not implemented" -- DONE: implement checks
+
+isValidAsciiText :: Uint8Array -> Effect Boolean
+isValidAsciiText = foldr ((isValid) <<< toInt) (false)
+  where
+  isValid :: Int -> Boolean -> Boolean
+  isValid a b
+    | a >= 0 && a <= 127 = true
+    | otherwise = b
 
 -- | a simple eye-balling test for drafting and type hole checks.
 test :: Effect Unit

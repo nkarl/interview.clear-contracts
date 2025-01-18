@@ -3,10 +3,10 @@ module Test.Main where
 import Prelude
 
 import Effect (Effect)
-import Effect.Class.Console (log)
+
+import Test.Task01 as Task01
 
 main :: Effect Unit
 main = do
-  log "🍕"
-  log "You should add some tests."
+    Task01.runSuite
 

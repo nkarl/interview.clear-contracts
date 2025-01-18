@@ -6,9 +6,11 @@ package:
     - console
     - effect
     - either
+    - foldable-traversable
     - lists
     - maybe
     - prelude
+    - test-unit
     - tuples
   test:
     main: Test.Main
