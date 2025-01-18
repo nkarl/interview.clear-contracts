@@ -5,6 +5,7 @@
         "path": "./",
         "core": {
           "dependencies": [
+            "arraybuffer",
             "arraybuffer-types",
             "console",
             "effect",
@@ -15,7 +16,9 @@
             "tuples"
           ],
           "build_plan": [
+            "arraybuffer",
             "arraybuffer-types",
+            "arrays",
             "bifunctors",
             "console",
             "const",
@@ -24,9 +27,13 @@
             "distributive",
             "effect",
             "either",
+            "enums",
             "exists",
+            "float32",
             "foldable-traversable",
+            "functions",
             "functors",
+            "gen",
             "identity",
             "invariant",
             "lazy",
@@ -34,15 +41,19 @@
             "maybe",
             "newtype",
             "nonempty",
+            "nullable",
+            "numbers",
             "orders",
             "partial",
             "prelude",
             "profunctor",
             "refs",
             "safe-coerce",
+            "st",
             "tailrec",
             "tuples",
             "type-equality",
+            "uint",
             "unfoldable",
             "unsafe-coerce"
           ]
@@ -579,11 +590,51 @@
     "extra_packages": {}
   },
   "packages": {
+    "arraybuffer": {
+      "type": "registry",
+      "version": "13.2.0",
+      "integrity": "sha256-fNsR19aRqcUis9C28MpyMigIlfX6f6Hq1up4IcTOvDU=",
+      "dependencies": [
+        "arraybuffer-types",
+        "arrays",
+        "effect",
+        "float32",
+        "functions",
+        "gen",
+        "maybe",
+        "nullable",
+        "prelude",
+        "tailrec",
+        "uint",
+        "unfoldable"
+      ]
+    },
     "arraybuffer-types": {
       "type": "registry",
       "version": "3.0.2",
       "integrity": "sha256-mQKokysYVkooS4uXbO+yovmV/s8b138Ws3zQvOwIHRA=",
       "dependencies": []
+    },
+    "arrays": {
+      "type": "registry",
+      "version": "7.3.0",
+      "integrity": "sha256-tmcklBlc/muUtUfr9RapdCPwnlQeB3aSrC4dK85gQlc=",
+      "dependencies": [
+        "bifunctors",
+        "control",
+        "foldable-traversable",
+        "functions",
+        "maybe",
+        "nonempty",
+        "partial",
+        "prelude",
+        "safe-coerce",
+        "st",
+        "tailrec",
+        "tuples",
+        "unfoldable",
+        "unsafe-coerce"
+      ]
     },
     "bifunctors": {
       "type": "registry",
@@ -668,12 +719,39 @@
         "prelude"
       ]
     },
+    "enums": {
+      "type": "registry",
+      "version": "6.0.1",
+      "integrity": "sha256-HWaD73JFLorc4A6trKIRUeDMdzE+GpkJaEOM1nTNkC8=",
+      "dependencies": [
+        "control",
+        "either",
+        "gen",
+        "maybe",
+        "newtype",
+        "nonempty",
+        "partial",
+        "prelude",
+        "tuples",
+        "unfoldable"
+      ]
+    },
     "exists": {
       "type": "registry",
       "version": "6.0.0",
       "integrity": "sha256-A0JQHpTfo1dNOj9U5/Fd3xndlRSE0g2IQWOGor2yXn8=",
       "dependencies": [
         "unsafe-coerce"
+      ]
+    },
+    "float32": {
+      "type": "registry",
+      "version": "2.0.0",
+      "integrity": "sha256-PRRdv0zNZ8JdohWTO3ZSLzt51ymxK4/NHtGTwuMWHtw=",
+      "dependencies": [
+        "gen",
+        "maybe",
+        "prelude"
       ]
     },
     "foldable-traversable": {
@@ -694,6 +772,14 @@
         "tuples"
       ]
     },
+    "functions": {
+      "type": "registry",
+      "version": "6.0.0",
+      "integrity": "sha256-adMyJNEnhGde2unHHAP79gPtlNjNqzgLB8arEOn9hLI=",
+      "dependencies": [
+        "prelude"
+      ]
+    },
     "functors": {
       "type": "registry",
       "version": "5.0.0",
@@ -712,6 +798,23 @@
         "profunctor",
         "tuples",
         "unsafe-coerce"
+      ]
+    },
+    "gen": {
+      "type": "registry",
+      "version": "4.0.0",
+      "integrity": "sha256-f7yzAXWwr+xnaqEOcvyO3ezKdoes8+WXWdXIHDBCAPI=",
+      "dependencies": [
+        "either",
+        "foldable-traversable",
+        "identity",
+        "maybe",
+        "newtype",
+        "nonempty",
+        "prelude",
+        "tailrec",
+        "tuples",
+        "unfoldable"
       ]
     },
     "identity": {
@@ -797,6 +900,25 @@
         "unfoldable"
       ]
     },
+    "nullable": {
+      "type": "registry",
+      "version": "6.0.0",
+      "integrity": "sha256-yiGBVl3AD+Guy4kNWWeN+zl1gCiJK+oeIFtZtPCw4+o=",
+      "dependencies": [
+        "effect",
+        "functions",
+        "maybe"
+      ]
+    },
+    "numbers": {
+      "type": "registry",
+      "version": "9.0.1",
+      "integrity": "sha256-/9M6aeMDBdB4cwYDeJvLFprAHZ49EbtKQLIJsneXLIk=",
+      "dependencies": [
+        "functions",
+        "maybe"
+      ]
+    },
     "orders": {
       "type": "registry",
       "version": "6.0.0",
@@ -850,6 +972,17 @@
         "unsafe-coerce"
       ]
     },
+    "st": {
+      "type": "registry",
+      "version": "6.2.0",
+      "integrity": "sha256-z9X0WsOUlPwNx9GlCC+YccCyz8MejC8Wb0C4+9fiBRY=",
+      "dependencies": [
+        "partial",
+        "prelude",
+        "tailrec",
+        "unsafe-coerce"
+      ]
+    },
     "tailrec": {
       "type": "registry",
       "version": "6.1.0",
@@ -880,6 +1013,19 @@
       "version": "4.0.1",
       "integrity": "sha256-Hs9D6Y71zFi/b+qu5NSbuadUQXe5iv5iWx0226vOHUw=",
       "dependencies": []
+    },
+    "uint": {
+      "type": "registry",
+      "version": "7.0.0",
+      "integrity": "sha256-fQ30YjiKz9DS6yqRdmK+WARVbJhpZDDTRcpFw675b6M=",
+      "dependencies": [
+        "effect",
+        "enums",
+        "gen",
+        "maybe",
+        "numbers",
+        "prelude"
+      ]
     },
     "unfoldable": {
       "type": "registry",
