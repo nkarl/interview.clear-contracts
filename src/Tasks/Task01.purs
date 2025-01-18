@@ -5,7 +5,7 @@ import Prelude
 import Data.ArrayBuffer.ArrayBuffer (empty)
 import Data.ArrayBuffer.Typed (toString, whole, foldr)
 import Data.ArrayBuffer.Types (Uint8Array)
-import Data.UInt (toInt)
+import Data.UInt (UInt, fromInt, toInt)
 import Effect (Effect)
 
 {-
@@ -38,16 +38,16 @@ toAsciiString = toString
 -- | A type to represent error messages.
 type ErrorMsg = String
 
--- | Takes a packed Uint8 array and check that its celluar values are bound between 0 and 127.
 --isValidAsciiText :: Uint8Array -> Either ErrorMsg AsciiText
 --isValidAsciiText _ = Left "the function isValidAsciiText not implemented" -- DONE: implement checks
 
+-- | Takes a packed Uint8 array and check that its celluar values are bound between 0 and 127.
 isValidAsciiText :: Uint8Array -> Effect Boolean
-isValidAsciiText = foldr ((isValid) <<< toInt) (false)
+isValidAsciiText = foldr (isValid) (false)
   where
-  isValid :: Int -> Boolean -> Boolean
+  isValid :: UInt -> Boolean -> Boolean
   isValid a b
-    | a >= 0 && a <= 127 = true
+    | a >= (fromInt 0) && a <= (fromInt 127) = true
     | otherwise = b
 
 -- | a simple eye-balling test for drafting and type hole checks.

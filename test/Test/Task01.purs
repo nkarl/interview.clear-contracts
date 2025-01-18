@@ -36,6 +36,9 @@ makeSuite =
     test "[1,2,3] is valid ASCII text" do
       let check = makeUint8Array [ 1, 2, 3 ] >>= T1.isValidAsciiText
       Assert.equal true =<< (liftEffect check)
-    test "[-1,2,3] is not valid ASCII text" do
-      let check = makeUint8Array [ -1, 2, 3 ] >>= T1.isValidAsciiText
+    test "[-1,2,3] is not valid ASCII text but (-1) is concerced into a UInt" do
+      let check = makeUint8Array [ -1, 2, 3 ] >>= T1.isValidAsciiText -- 
+      Assert.equal true =<< (liftEffect check)
+    test "[128,222,233] is not valid ASCII text" do
+      let check = makeUint8Array [ 128, 222, 233 ] >>= T1.isValidAsciiText
       Assert.equal false =<< (liftEffect check)
