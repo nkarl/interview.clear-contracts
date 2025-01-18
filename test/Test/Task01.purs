@@ -6,6 +6,7 @@ import Prelude
 
 import Control.Monad.Free (Free)
 import Data.ArrayBuffer.Typed (fromArray)
+import Data.Char.Utils as String.Utils.Char
 import Data.Maybe (Maybe(..))
 import Data.UInt (fromInt)
 import Effect (Effect)
@@ -47,5 +48,8 @@ toAsciiStringTest :: Free TestF Unit
 toAsciiStringTest =
   suite "Task01 test suite for toAsciiString" do
     test "[1,2,3] is valid ASCII text" do
-      let check = makeUint8Array [ 1, 2, 3 ] >>= T1.toAsciiString
-      Assert.equal (Just "123") =<< (liftEffect check)
+      let check = makeUint8Array [ 99, 98, 99 ] >>= T1.transformAsciiText
+      Assert.equal (Just "abc") =<< (liftEffect check)
+    test "[128,222,233] is not valid ASCII text" do
+      let check = makeUint8Array [ 128, 228, 238 ] >>= T1.transformAsciiText
+      Assert.equal Nothing =<< (liftEffect check)

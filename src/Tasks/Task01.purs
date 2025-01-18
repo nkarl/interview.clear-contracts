@@ -2,10 +2,11 @@ module Tasks.Task01 where
 
 import Prelude
 
-import Data.ArrayBuffer.Typed (foldr, toString)
-import Data.ArrayBuffer.Types (Uint8Array)
+import Data.ArrayBuffer.Typed (filter, foldr, toString)
+import Data.ArrayBuffer.Types (Uint8, Uint8Array)
 import Data.Maybe (Maybe(..))
-import Data.UInt (UInt, fromInt)
+import Data.String.Utils (stripChars)
+import Data.UInt (UInt, fromInt, toInt)
 import Effect (Effect)
 
 {- NOTE:
@@ -24,8 +25,9 @@ import Effect (Effect)
 3. [x] define a function `isValidAsciiText :: ArrayView Uint8 -> Either ErrorMsg AsciiText`
     - [x] use foldl
     - [x] with tests
-4. [ ] compose `Data.ArrayBuffer.Typed.toString` with `isValidAsciiText` to create `toAsciiString`
-    - [ ] write tests
+4. [x] compose `Data.ArrayBuffer.Typed.toString` with `isValidAsciiText` to create `toAsciiString`
+    - [ ] define a function that compose with `String.Utils.Char.fromCodePoint` from a UInt -> String
+    - [ ] traverse and create a new Array/List of string
 -}
 
 -- | An alias for the type `ArrayView Uint8` FFDI. Identical to:
@@ -49,6 +51,26 @@ isValidAsciiText = foldr (isValid) (false)
 toAsciiString :: AsciiText -> Effect (Maybe String)
 toAsciiString as = do
   isValid <- isValidAsciiText as
-  case isValid of
-    true -> Just <$> (toString as)
+  str <- case isValid of
+    -- BUG: should map to a new filtered ArrayView without the commas
+    true -> Just <$> stripChars "," <$> (toString as)
     false -> pure Nothing
+  pure str
+
+-- rewrite
+transformAsciiText :: AsciiText -> Effect (Maybe String)
+transformAsciiText as = do
+  isValid <- isValidAsciiText as
+  str <- case isValid of
+    -- BUG: should map to a new filtered ArrayView without the commas
+    true -> Just <$> stripChars "," <$> (toString =<< f as)
+    false -> pure Nothing
+  pure str
+
+  where
+    f :: AsciiText -> Effect (AsciiText)
+    f = filter (toInt >>> \x -> x /= 44)
+
+    -- TODO:
+    -- - [ ] define a function that compose with `String.Utils.Char.fromCodePoint` from a UInt -> String
+    -- - [ ] traverse and create a new Array/List of string

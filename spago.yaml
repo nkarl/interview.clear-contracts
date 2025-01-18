@@ -10,6 +10,8 @@ package:
     - lists
     - maybe
     - prelude
+    - strings
+    - stringutils
     - test-unit
     - tuples
   test:

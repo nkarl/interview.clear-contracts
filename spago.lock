@@ -14,6 +14,8 @@
             "lists",
             "maybe",
             "prelude",
+            "strings",
+            "stringutils",
             "test-unit",
             "tuples"
           ],
@@ -67,6 +69,7 @@
             "safe-coerce",
             "st",
             "strings",
+            "stringutils",
             "tailrec",
             "test-unit",
             "transformers",
@@ -1248,6 +1251,19 @@
         "tuples",
         "unfoldable",
         "unsafe-coerce"
+      ]
+    },
+    "stringutils": {
+      "type": "registry",
+      "version": "0.0.12",
+      "integrity": "sha256-t63QWBlp49U0nRqUcFryKflSJsNKGTQAHKjn24/+ooI=",
+      "dependencies": [
+        "arrays",
+        "integers",
+        "maybe",
+        "partial",
+        "prelude",
+        "strings"
       ]
     },
     "tailrec": {
