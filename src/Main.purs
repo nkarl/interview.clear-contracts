@@ -2,7 +2,7 @@ module Main where
 
 import Prelude
 
-import AsciiTextType as AsciiType
+import Tasks.Task01 as AsciiType
 import Effect (Effect)
 
 main :: Effect Unit

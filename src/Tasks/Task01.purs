@@ -1,4 +1,4 @@
-module AsciiTextType where
+module Tasks.Task01 where
 
 import Prelude
 
