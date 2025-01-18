@@ -7,13 +7,23 @@ import Data.ArrayBuffer.Types (Uint8Array)
 import Data.UInt (UInt, fromInt)
 import Effect (Effect)
 
-{- | TODO: Task 1:
-    1. [x] create the type `AsciiText` which wraps `ArrayView Uint8` from the `arraybuffer-types` library
-    2. [x] define a function `toAsciiString :: AsiiText -> Effect String`
-        - [x] with tests
-    3. [x] define a function `isValidAsciiText :: ArrayView Uint8 -> Either ErrorMsg AsciiText`
-        - [x] use foldl
-        - [x] with tests
+{- NOTE:
+1. Define a type `AsciiText` which wraps an `ArrayView Uint8` from `arraybuffer-types`, 
+   representing packed ASCII text data. 
+2. Define `toAsciiString :: AsciiText -> Effect String` function for this type.
+3. Write a function which takes an `ArrayView Uint8`, checks if it is valid ASCII, then
+   constructs an `AsciiText` if it is, failing otherwise.
+4. Write tests to ensure correct functionality in 2 and 3.
+-}
+
+{- TODO:
+1. [x] create the type `AsciiText` which wraps `ArrayView Uint8` from the `arraybuffer-types` library
+2. [x] define a function `toAsciiString :: AsiiText -> Effect String`
+    - [x] with tests
+3. [x] define a function `isValidAsciiText :: ArrayView Uint8 -> Either ErrorMsg AsciiText`
+    - [x] use foldl
+    - [x] with tests
+4. [ ] compose `Data.ArrayBuffer.Typed.toString` with `isValidAsciiText` to create `toAsciiString`
 -}
 
 -- | An alias for the type `ArrayView Uint8` FFDI. Identical to:
@@ -21,10 +31,6 @@ import Effect (Effect)
 -- | type AsciiText = ArrayView Uint8
 -- | ```
 type AsciiText = Uint8Array
-
--- | An alias for the library function `Data.ArrayBuffer.Typed.toString`
-toAsciiString :: AsciiText -> Effect String
-toAsciiString = toString
 
 -- | A type to represent error messages.
 type ErrorMsg = String
@@ -37,3 +43,7 @@ isValidAsciiText = foldr (isValid) (false)
   isValid a b
     | a >= (fromInt 0) && a <= (fromInt 127) = true
     | otherwise = b
+
+-- | TODO:
+toAsciiString :: AsciiText -> Effect String
+toAsciiString = toString
