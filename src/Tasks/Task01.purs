@@ -4,6 +4,7 @@ import Prelude
 
 import Data.ArrayBuffer.Typed (foldr, toString)
 import Data.ArrayBuffer.Types (Uint8Array)
+import Data.Maybe (Maybe(..))
 import Data.UInt (UInt, fromInt)
 import Effect (Effect)
 
@@ -24,6 +25,7 @@ import Effect (Effect)
     - [x] use foldl
     - [x] with tests
 4. [ ] compose `Data.ArrayBuffer.Typed.toString` with `isValidAsciiText` to create `toAsciiString`
+    - [ ] write tests
 -}
 
 -- | An alias for the type `ArrayView Uint8` FFDI. Identical to:
@@ -44,6 +46,9 @@ isValidAsciiText = foldr (isValid) (false)
     | a >= (fromInt 0) && a <= (fromInt 127) = true
     | otherwise = b
 
--- | TODO:
-toAsciiString :: AsciiText -> Effect String
-toAsciiString = toString
+toAsciiString :: AsciiText -> Effect (Maybe String)
+toAsciiString as = do
+  isValid <- isValidAsciiText as
+  case isValid of
+    true -> Just <$> (toString as)
+    false -> pure Nothing

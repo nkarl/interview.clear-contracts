@@ -2,9 +2,9 @@ module Main where
 
 import Prelude
 
-import Tasks.Task01 as AsciiType
 import Effect (Effect)
+import Effect.Class.Console (log)
 
 main :: Effect Unit
 main = do
-    AsciiType.test
+    log $ show "default text."

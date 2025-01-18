@@ -6,6 +6,7 @@ import Prelude
 
 import Control.Monad.Free (Free)
 import Data.ArrayBuffer.Typed (fromArray)
+import Data.Maybe (Maybe(..))
 import Data.UInt (fromInt)
 import Effect (Effect)
 import Effect.Class (liftEffect)
@@ -16,7 +17,8 @@ import Test.Unit.Main (runTest)
 
 runSuite :: Effect Unit
 runSuite = runTest do
-  makeSuite
+  isValidAsciiTextTest
+  toAsciiStringTest
 
 defaultBufferSize :: Int
 defaultBufferSize = 8
@@ -28,11 +30,9 @@ defaultBufferSize = 8
 makeUint8Array :: Array Int -> Effect (T1.AsciiText)
 makeUint8Array = fromArray <<< map fromInt
 
-makeSuite :: Free TestF Unit
-makeSuite =
-  suite "Task01 test suite" do
-    test "42 == 42" do
-      Assert.equal 42 42
+isValidAsciiTextTest :: Free TestF Unit
+isValidAsciiTextTest =
+  suite "Task01 test suite for isValidAsciiText" do
     test "[1,2,3] is valid ASCII text" do
       let check = makeUint8Array [ 1, 2, 3 ] >>= T1.isValidAsciiText
       Assert.equal true =<< (liftEffect check)
@@ -42,3 +42,10 @@ makeSuite =
     test "[128,222,233] is not valid ASCII text" do
       let check = makeUint8Array [ 128, 222, 233 ] >>= T1.isValidAsciiText
       Assert.equal false =<< (liftEffect check)
+
+toAsciiStringTest :: Free TestF Unit
+toAsciiStringTest =
+  suite "Task01 test suite for toAsciiString" do
+    test "[1,2,3] is valid ASCII text" do
+      let check = makeUint8Array [ 1, 2, 3 ] >>= T1.toAsciiString
+      Assert.equal (Just "123") =<< (liftEffect check)
