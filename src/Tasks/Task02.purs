@@ -4,7 +4,7 @@ import Prelude
 
 {- NOTE:
 1. Write a function that validates whether the `AsciiText` is correctly parenthesized. 
-   Parentheses to take into account are `()` and `[]`. There can only be a single pair 
+   Parentheses to take into account are `()` AND `[]`. There can only be a single pair 
    of parentheses, i.e no other parentheses can be there for it to be valid. 
    Example of a valid parentheses: `A(bxe.)` or `[xyz]a`. 
    Example of invalid: `(abc()` or `abcd]x`
@@ -29,5 +29,21 @@ import Prelude
       - [ ] write tests.
 -}
 
---isCorrectlyParenthesized =
+{--
+  data Enclosure
+    = PAREN_LEFT
+    | PAREN_RIGHT
+    | BRACKET_LEFT
+    | BRACKET_RIGHT
+    deriving (Show, Eq)
+
+  isCorrectlyParenthesized = 0 == validPairs '[]' == validPairs '()'
+    where
+      validPairs = foldl check 0
+      check a count
+        | isEnclosure a == PAREN_LEFT = count + 1
+        | isEnclosure a == PAREN_RIGHT = count - 1
+        | otherwise = count
+  isEnclosureSymbol :: UInt -> Enclosure
+--}
 
