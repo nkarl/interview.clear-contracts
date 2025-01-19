@@ -2,9 +2,10 @@ module Tasks.Task01 where
 
 import Prelude
 
-import Data.ArrayBuffer.Typed (filter, foldr, toString)
+import Data.ArrayBuffer.Typed (filter, foldl, foldr, toString)
 import Data.ArrayBuffer.Types (Uint8, Uint8Array)
-import Data.Maybe (Maybe(..))
+import Data.Char.Utils (fromCodePoint)
+import Data.Maybe (Maybe(..), fromMaybe)
 import Data.String.Utils (stripChars)
 import Data.UInt (UInt, fromInt, toInt)
 import Effect (Effect)
@@ -62,15 +63,25 @@ transformAsciiText :: AsciiText -> Effect (Maybe String)
 transformAsciiText as = do
   isValid <- isValidAsciiText as
   str <- case isValid of
-    -- BUG: should map to a new filtered ArrayView without the commas
-    true -> Just <$> stripChars "," <$> (toString =<< f as)
-    false -> pure Nothing
-  pure str
+    false -> pure $ Nothing
+    true -> Just <$> (createString as)
+  pure $ str
 
   where
-    f :: AsciiText -> Effect (AsciiText)
-    f = filter (toInt >>> \x -> x /= 44)
+  -- TODO:
+  -- - [x] define a function that compose with `String.Utils.Char.fromCodePoint` from a UInt -> String
+  --    ```
+  --    t :: String -> String 
+  --    t = (fromMaybe "") <<< fromCodePoint
+  --    ```
+  -- for TASK 3
+  --  - [ ] traverse and create a new Array/List of string
 
-    -- TODO:
-    -- - [ ] define a function that compose with `String.Utils.Char.fromCodePoint` from a UInt -> String
-    -- - [ ] traverse and create a new Array/List of string
+  g :: UInt -> String
+  g = fromMaybe mempty <<< fromCodePoint <<< toInt
+
+  h :: String -> UInt -> String
+  h s unsigned = s <> (g unsigned)
+
+  createString :: AsciiText -> Effect String
+  createString = foldl h mempty
