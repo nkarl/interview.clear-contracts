@@ -6,7 +6,6 @@ import Prelude
 
 import Control.Monad.Free (Free)
 import Data.ArrayBuffer.Typed (fromArray)
-import Data.Char.Utils as String.Utils.Char
 import Data.Maybe (Maybe(..))
 import Data.UInt (fromInt)
 import Effect (Effect)

@@ -74,8 +74,6 @@ transformAsciiText as = do
   --    t :: String -> String 
   --    t = (fromMaybe "") <<< fromCodePoint
   --    ```
-  -- for TASK 3
-  --  - [ ] traverse and create a new Array/List of string
 
   g :: UInt -> String
   g = fromMaybe mempty <<< fromCodePoint <<< toInt
