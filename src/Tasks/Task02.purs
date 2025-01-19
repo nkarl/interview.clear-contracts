@@ -27,6 +27,8 @@ import Prelude
       - [ ] write tests.
   2. [ ] define a new function the extends the implemtation to check for 2 cases `(]` and `[)`.:w
       - [ ] write tests.
+  3. [ ] describing 3 properties
+      - [ ] isomorphic? commutative?
 -}
 
 {--

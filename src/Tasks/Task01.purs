@@ -2,11 +2,10 @@ module Tasks.Task01 where
 
 import Prelude
 
-import Data.ArrayBuffer.Typed (filter, foldl, foldr, toString)
-import Data.ArrayBuffer.Types (Uint8, Uint8Array)
+import Data.ArrayBuffer.Typed (foldl, foldr)
+import Data.ArrayBuffer.Types (Uint8Array)
 import Data.Char.Utils (fromCodePoint)
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.String.Utils (stripChars)
 import Data.UInt (UInt, fromInt, toInt)
 import Effect (Effect)
 
@@ -27,8 +26,7 @@ import Effect (Effect)
     - [x] use foldl
     - [x] with tests
 4. [x] compose `Data.ArrayBuffer.Typed.toString` with `isValidAsciiText` to create `toAsciiString`
-    - [ ] define a function that compose with `String.Utils.Char.fromCodePoint` from a UInt -> String
-    - [ ] traverse and create a new Array/List of string
+    - [x] define a function that compose with `String.Utils.Char.fromCodePoint` from a UInt -> String
 -}
 
 -- | An alias for the type `ArrayView Uint8` FFDI. Identical to:
@@ -37,10 +35,7 @@ import Effect (Effect)
 -- | ```
 type AsciiText = Uint8Array
 
--- | A type to represent error messages.
-type ErrorMsg = String
-
--- | Takes a packed Uint8 array and check that its celluar values are bound between 0 and 127.
+-- | Takes a packed Uint8 array and check that its cellular values are correctly bounded between 0 and 127.
 isValidAsciiText :: Uint8Array -> Effect Boolean
 isValidAsciiText = foldr (isValid) (false)
   where
@@ -49,32 +44,16 @@ isValidAsciiText = foldr (isValid) (false)
     | a >= (fromInt 0) && a <= (fromInt 127) = true
     | otherwise = b
 
+-- | Decodes a Uint8 buffer into a possible String. Because we work with FFI (ArrayBuffer and relevant types
+-- | are FFI wrappers for the underlying native JavaScript, we must use the Effect monad.
 toAsciiString :: AsciiText -> Effect (Maybe String)
 toAsciiString as = do
-  isValid <- isValidAsciiText as
-  str <- case isValid of
-    -- BUG: should map to a new filtered ArrayView without the commas
-    true -> Just <$> stripChars "," <$> (toString as)
-    false -> pure Nothing
-  pure str
-
--- rewrite
-transformAsciiText :: AsciiText -> Effect (Maybe String)
-transformAsciiText as = do
   isValid <- isValidAsciiText as
   str <- case isValid of
     false -> pure $ Nothing
     true -> Just <$> (createString as)
   pure $ str
-
   where
-  -- TODO:
-  -- - [x] define a function that compose with `String.Utils.Char.fromCodePoint` from a UInt -> String
-  --    ```
-  --    t :: String -> String 
-  --    t = (fromMaybe "") <<< fromCodePoint
-  --    ```
-
   g :: UInt -> String
   g = fromMaybe mempty <<< fromCodePoint <<< toInt
 
