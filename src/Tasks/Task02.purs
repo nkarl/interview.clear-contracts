@@ -31,7 +31,7 @@ import Tasks.Task01 (AsciiText)
   1. [x] define a folding action to check that the correctly paired parentheses reduce to 0.
       - [x] implement for `()` first.
       - [x] incorporate `[]`.
-      - [ ] write tests.
+      - [x] write tests.
   2. [ ] define a new function the extends the implemtation to check for 2 cases `(]` and `[)`.
       - [ ] write tests.
   3. [ ] describing 3 properties
