@@ -2,7 +2,7 @@ module Tasks.Task02 where
 
 import Prelude
 
-import Data.ArrayBuffer.Typed (foldl)
+import Data.ArrayBuffer.Typed (foldl, foldr)
 import Data.Generic.Rep (class Generic)
 import Data.Show.Generic (genericShow)
 import Data.UInt (UInt, toInt)
@@ -99,7 +99,7 @@ hasCorrectEnclosurePairsOdd arr = do
 
   where
 
-  validPairs = foldl (flip check)
+  validPairs = foldr (check)
 
   check a s@{ parenCount, brackCount }
     | matchSymbol a == PAREN_LEFT = { parenCount: parenCount + 1, brackCount } -- (
