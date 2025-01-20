@@ -66,11 +66,14 @@ import Tasks.Task01 (AsciiText)
 -}
 
 {- TODO:
-  1. [ ] compose `insert`
-      - set
-      - setTyped: stores multiple values in an ArrayView, reading input from a second ArrayView
-      - slice: copy a chunk of an ArrayView between [i,j] into a new Buffer
-      - empty
+  1. [x] compose `insert`
+      - [x] setTyped: stores multiple values in an ArrayView, reading input from a second ArrayView
+      - [x] empty
+      - [x] length
+  2. [ ] set up tests for 1-million-token long buffers.
+      - [ ] fn to generate an insertee buffer and fill with random values
+      - [ ] fn to repeatedly insert a smaller inserter buffer at some random position K for N times.
+          - $N \in (0.001, 0.01, 0.1)$ times the length of the insertee buffer.
 -}
 
 {-
@@ -84,7 +87,7 @@ import Tasks.Task01 (AsciiText)
           of the 'target' (if anything). Handle failures in any way you see suitable.
 -}
 
-type Inserted = AsciiText
+type Inserter = AsciiText
 type Idx = Int
 type Insertee = AsciiText
 type Result = AsciiText
@@ -96,7 +99,7 @@ makeAsciiBuffer size =
 makeArrayView :: Array Int -> Effect (AsciiText)
 makeArrayView = fromArray <<< map fromInt
 
-insert :: Inserted -> Idx -> Insertee -> Effect Result
+insert :: Inserter -> Idx -> Insertee -> Effect Result
 insert inserter idx insertee = do
   prefix <- slice 0 idx insertee
   _infix <- slice 0 (length inserter) inserter
