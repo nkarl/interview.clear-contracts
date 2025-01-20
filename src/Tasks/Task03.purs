@@ -65,5 +65,19 @@ import Tasks.Task01 (AsciiText)
       - slice: copy a chunk of an ArrayView between [i,j] into a new Buffer
 -}
 
---insert :: AsciiText -> Int -> AsciiText -> AsciiText
+{-
+1. `insert` takes
+    - an `AsciiText` from Task 1 (the 'target'),
+    - an `Int` (the insert position), and
+    - another `AsciiText` (the thing to be inserted), and
+    - produces another `AsciiText` where
+        - all data at any index in the result less than the insert position come from
+          the 'target', followed by all the data in the thing to be inserted, followed by what remains
+          of the 'target' (if anything). Handle failures in any way you see suitable.
+-}
+
+type Target = AsciiText
+type Source = AsciiText
+type Result = AsciiText
+--insert :: Target -> Int -> Source -> Result
 --insert = empty
