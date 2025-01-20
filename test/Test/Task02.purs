@@ -35,10 +35,10 @@ test_isCorrectlyParenthesized =
       Assert.equal false =<< (liftEffect check)
     test "[40,222,233, 41] is correctly paired `()`" do
       let check = makeUint8Array [ 40, 222, 233, 41 ] >>= Task02.isCorrectlyParenthesized
-      Assert.equal false =<< (liftEffect check)
+      Assert.equal true =<< (liftEffect check)
     test "[40,222,233, 41] is not correctly paired `[]`" do
       let check = makeUint8Array [ 91, 222, 233 ] >>= Task02.isCorrectlyParenthesized
       Assert.equal false =<< (liftEffect check)
     test "[40,222,233, 41] is correctly paired `[]`" do
       let check = makeUint8Array [ 91, 222, 233, 93 ] >>= Task02.isCorrectlyParenthesized
-      Assert.equal false =<< (liftEffect check)
+      Assert.equal true =<< (liftEffect check)
