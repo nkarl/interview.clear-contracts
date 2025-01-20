@@ -30,41 +30,41 @@ makeUint8Array = fromArray <<< map fromInt
 
 test_isCorrectlyParenthesized :: Free TestF Unit
 test_isCorrectlyParenthesized =
-  suite "Task02 test suite for isCorrectlyParenthesized" do
+  suite "Task02 test suite for hasCorrectEnclosurePairs" do
     test "[40,222,233] is NOT correctly paired `(.+`" do
-      let check = makeUint8Array [ 40, 222, 233 ] >>= Task02.isCorrectlyParenthesized
+      let check = makeUint8Array [ 40, 222, 233 ] >>= Task02.hasCorrectEnclosurePairs
       Assert.equal false =<< (liftEffect check)
     test "[40,222,233,41] is correctly paired `(.+)`" do
-      let check = makeUint8Array [ 40, 222, 233, 41, 128 ] >>= Task02.isCorrectlyParenthesized
+      let check = makeUint8Array [ 40, 222, 233, 41, 128 ] >>= Task02.hasCorrectEnclosurePairs
       Assert.equal true =<< (liftEffect check)
     test "[40,222,233,41] is NOT correctly paired `.+)`" do
-      let check = makeUint8Array [ 222, 233, 41 ] >>= Task02.isCorrectlyParenthesized
+      let check = makeUint8Array [ 222, 233, 41 ] >>= Task02.hasCorrectEnclosurePairs
       Assert.equal false =<< (liftEffect check)
     test "[40,40,222,233,41] is NOT correctly paired `((.+)`" do
-      let check = makeUint8Array [ 40, 40, 222, 233, 41 ] >>= Task02.isCorrectlyParenthesized
+      let check = makeUint8Array [ 40, 40, 222, 233, 41 ] >>= Task02.hasCorrectEnclosurePairs
       Assert.equal false =<< (liftEffect check)
     test "[91,222,233] is NOT correctly paired `[.+`" do
-      let check = makeUint8Array [ 91, 222, 233 ] >>= Task02.isCorrectlyParenthesized
+      let check = makeUint8Array [ 91, 222, 233 ] >>= Task02.hasCorrectEnclosurePairs
       Assert.equal false =<< (liftEffect check)
     test "[91,222,233 93] is correctly paired `[.+]`" do
-      let check = makeUint8Array [ 91, 222, 233, 93 ] >>= Task02.isCorrectlyParenthesized
+      let check = makeUint8Array [ 91, 222, 233, 93 ] >>= Task02.hasCorrectEnclosurePairs
       Assert.equal true =<< (liftEffect check)
     test "[91,222,233,93,93] is correctly paired `[.+]]`" do
-      let check = makeUint8Array [ 91, 222, 233, 93, 93 ] >>= Task02.isCorrectlyParenthesized
+      let check = makeUint8Array [ 91, 222, 233, 93, 93 ] >>= Task02.hasCorrectEnclosurePairs
       Assert.equal false =<< (liftEffect check)
 
 test_isCorrectlyParenthesizedWeird :: Free TestF Unit
 test_isCorrectlyParenthesizedWeird =
-  suite "Task02 test suite for isCorrectlyParenthesizedWeird" do
+  suite "Task02 test suite for hasCorrectEnclosurePairsOdd" do
     test "[40,222,233,41] is NOT correctly paired `(.+)`" do
-      let check = makeUint8Array [ 40, 222, 233, 41, 128 ] >>= Task02.isCorrectlyParenthesizedWeird
+      let check = makeUint8Array [ 40, 222, 233, 41, 128 ] >>= Task02.hasCorrectEnclosurePairsOdd
       Assert.equal false =<< (liftEffect check)
     test "[91,222,233,41] is NOT correctly paired `[.+)`" do
-      let check = makeUint8Array [ 91, 222, 233, 41 ] >>= Task02.isCorrectlyParenthesizedWeird
+      let check = makeUint8Array [ 91, 222, 233, 41 ] >>= Task02.hasCorrectEnclosurePairsOdd
       Assert.equal true =<< (liftEffect check)
     test "[91,222,233 93] is NOT correctly paired `[.+]`" do
-      let check = makeUint8Array [ 91, 222, 233, 93 ] >>= Task02.isCorrectlyParenthesizedWeird
+      let check = makeUint8Array [ 91, 222, 233, 93 ] >>= Task02.hasCorrectEnclosurePairsOdd
       Assert.equal false =<< (liftEffect check)
     test "[40,222,233,93,93] is correctly paired `(.+]`" do
-      let check = makeUint8Array [ 40, 222, 233, 93 ] >>= Task02.isCorrectlyParenthesizedWeird
+      let check = makeUint8Array [ 40, 222, 233, 93 ] >>= Task02.hasCorrectEnclosurePairsOdd
       Assert.equal true =<< (liftEffect check)

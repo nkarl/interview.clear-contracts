@@ -39,6 +39,7 @@ import Tasks.Task01 (AsciiText)
       - [ ] isomorphic? commutative? properties of input?
 -}
 
+-- | A simple coproduct type for the enclosure symbols.
 data Enclosure
   = PAREN_LEFT
   | PAREN_RIGHT
@@ -53,6 +54,7 @@ derive instance eqEnclosure :: Eq Enclosure
 instance showEnclosure :: Show Enclosure where
   show = genericShow
 
+-- | Translates a UInt value to an Enclosure variant.
 matchSymbol :: UInt -> Enclosure
 matchSymbol = toInt >>> case _ of
   40 -> PAREN_LEFT -- `(`
@@ -61,13 +63,16 @@ matchSymbol = toInt >>> case _ of
   93 -> BRACK_RIGHT -- `]`
   _ -> NO_SUPPORT
 
-type State =
+-- | A simple state to capture the accumulated/reduced counts for valid pairs of Enclosure.
+-- | A valid State always equalizes to 0 for both counts.
+type EnclosureState =
   { parenCount :: Int
   , brackCount :: Int
   }
 
-isCorrectlyParenthesized :: AsciiText -> Effect Boolean
-isCorrectlyParenthesized arr = do
+-- | Checks if an Uint8 ArrayView of a buffer contains the correctly paired Enclosure symbols.
+hasCorrectEnclosurePairs :: AsciiText -> Effect Boolean
+hasCorrectEnclosurePairs arr = do
   let
     z0 = { parenCount: 0, brackCount: 0 }
   res <- validPairs z0 arr
@@ -84,8 +89,9 @@ isCorrectlyParenthesized arr = do
     | matchSymbol a == BRACK_RIGHT = { parenCount, brackCount: brackCount - 1 }
     | otherwise = s
 
-isCorrectlyParenthesizedWeird :: AsciiText -> Effect Boolean
-isCorrectlyParenthesizedWeird arr = do
+-- | The same as `hasCorrectEnclosurePairs`, modified to checks for the odd pair `(+.]` and `[.+)`.
+hasCorrectEnclosurePairsOdd :: AsciiText -> Effect Boolean
+hasCorrectEnclosurePairsOdd arr = do
   let
     z0 = { parenCount: 0, brackCount: 0 }
   res <- validPairs z0 arr
