@@ -13,10 +13,10 @@ import Test.Unit (TestF, suite, test)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (runTest)
 
-runSuite :: Effect Unit
-runSuite = runTest do
+runSuites :: Effect Unit
+runSuites = runTest do
   test_isCorrectlyParenthesized
-  test_isCorrectlyParenthesizedWeird
+  test_isCorrectlyParenthesizedOdd
 
 defaultBufferSize :: Int
 defaultBufferSize = 8
@@ -30,41 +30,38 @@ makeUint8Array = fromArray <<< map fromInt
 
 test_isCorrectlyParenthesized :: Free TestF Unit
 test_isCorrectlyParenthesized =
-  suite "Task02 test suite for hasCorrectEnclosurePairs" do
-    test "[40,222,233] is NOT correctly paired `(.+`" do
-      let check = makeUint8Array [ 40, 222, 233 ] >>= Task02.hasCorrectEnclosurePairs
-      Assert.equal false =<< (liftEffect check)
-    test "[40,222,233,41] is correctly paired `(.+)`" do
-      let check = makeUint8Array [ 40, 222, 233, 41, 128 ] >>= Task02.hasCorrectEnclosurePairs
-      Assert.equal true =<< (liftEffect check)
-    test "[40,222,233,41] is NOT correctly paired `.+)`" do
-      let check = makeUint8Array [ 222, 233, 41 ] >>= Task02.hasCorrectEnclosurePairs
-      Assert.equal false =<< (liftEffect check)
-    test "[40,40,222,233,41] is NOT correctly paired `((.+)`" do
-      let check = makeUint8Array [ 40, 40, 222, 233, 41 ] >>= Task02.hasCorrectEnclosurePairs
-      Assert.equal false =<< (liftEffect check)
-    test "[91,222,233] is NOT correctly paired `[.+`" do
-      let check = makeUint8Array [ 91, 222, 233 ] >>= Task02.hasCorrectEnclosurePairs
-      Assert.equal false =<< (liftEffect check)
-    test "[91,222,233 93] is correctly paired `[.+]`" do
-      let check = makeUint8Array [ 91, 222, 233, 93 ] >>= Task02.hasCorrectEnclosurePairs
-      Assert.equal true =<< (liftEffect check)
-    test "[91,222,233,93,93] is correctly paired `[.+]]`" do
-      let check = makeUint8Array [ 91, 222, 233, 93, 93 ] >>= Task02.hasCorrectEnclosurePairs
-      Assert.equal false =<< (liftEffect check)
+  let
+    testFn = Task02.hasCorrectEnclosurePairs
+    checkArr arr = makeUint8Array arr >>= testFn # liftEffect
+  in
+    suite "Task02 test suite for case hasCorrectEnclosurePairs" do
+      test "should NOT correctly pair for the case `(.+`" do
+        Assert.equal false =<< checkArr [ 40, 222, 233 ]
+      test "should     correctly pair for the case `(.+)`" do
+        Assert.equal true =<< checkArr [ 40, 222, 233, 41, 128 ]
+      test "should NOT correctly pair for the case `.+)`" do
+        Assert.equal false =<< checkArr [ 222, 233, 41 ]
+      test "should NOT correctly pair for the case `((.+)`" do
+        Assert.equal false =<< checkArr [ 40, 40, 222, 233, 41 ]
+      test "should NOT correctly pair for the case `[.+`" do
+        Assert.equal false =<< checkArr [ 91, 222, 233 ]
+      test "should     correctly pair for the case `[.+]`" do
+        Assert.equal true =<< checkArr [ 91, 222, 233, 93 ]
+      test "should NOT correctly pair for the case `[.+]]`" do
+        Assert.equal false =<< checkArr [ 91, 222, 233, 93, 93 ]
 
-test_isCorrectlyParenthesizedWeird :: Free TestF Unit
-test_isCorrectlyParenthesizedWeird =
-  suite "Task02 test suite for hasCorrectEnclosurePairsOdd" do
-    test "[40,222,233,41] is NOT correctly paired `(.+)`" do
-      let check = makeUint8Array [ 40, 222, 233, 41, 128 ] >>= Task02.hasCorrectEnclosurePairsOdd
-      Assert.equal false =<< (liftEffect check)
-    test "[91,222,233,41] is NOT correctly paired `[.+)`" do
-      let check = makeUint8Array [ 91, 222, 233, 41 ] >>= Task02.hasCorrectEnclosurePairsOdd
-      Assert.equal true =<< (liftEffect check)
-    test "[91,222,233 93] is NOT correctly paired `[.+]`" do
-      let check = makeUint8Array [ 91, 222, 233, 93 ] >>= Task02.hasCorrectEnclosurePairsOdd
-      Assert.equal false =<< (liftEffect check)
-    test "[40,222,233,93,93] is correctly paired `(.+]`" do
-      let check = makeUint8Array [ 40, 222, 233, 93 ] >>= Task02.hasCorrectEnclosurePairsOdd
-      Assert.equal true =<< (liftEffect check)
+test_isCorrectlyParenthesizedOdd :: Free TestF Unit
+test_isCorrectlyParenthesizedOdd =
+  let
+    testFn = Task02.hasCorrectEnclosurePairsOdd
+    checkArr arr = makeUint8Array arr >>= testFn # liftEffect
+  in
+    suite "Task02 test suite for case hasCorrectEnclosurePairsOdd" do
+      test "should NOT correctly pair for the case `(.+)`" do
+        Assert.equal false =<< checkArr [ 40, 222, 233, 41, 128 ]
+      test "should     correctly pair for the case `[.+)`" do
+        Assert.equal true =<< checkArr [ 91, 222, 233, 41 ]
+      test "should NOT correctly pair for the case `[.+]`" do
+        Assert.equal false =<< checkArr [ 91, 222, 233, 93 ]
+      test "should     correctly pair for the case `(.+]`" do
+        Assert.equal true =<< checkArr [ 40, 222, 233, 93 ]

@@ -9,6 +9,6 @@ import Test.Task02 as Task02
 
 main :: Effect Unit
 main = do
-    Task01.runSuite
-    Task02.runSuite
+    Task01.runSuites
+    Task02.runSuites
 

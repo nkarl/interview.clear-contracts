@@ -13,8 +13,8 @@ import Test.Unit (TestF, suite, test)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (runTest)
 
-runSuite :: Effect Unit
-runSuite = runTest do
+runSuites :: Effect Unit
+runSuites = runTest do
   test_isValidAsciiText
   test_toAsciiString
 
@@ -30,23 +30,26 @@ makeUint8Array = fromArray <<< map fromInt
 
 test_isValidAsciiText :: Free TestF Unit
 test_isValidAsciiText =
-  suite "Task01 test suite for isValidAsciiText" do
-    test "[1,2,3] is valid ASCII text" do
-      let check = makeUint8Array [ 1, 2, 3 ] >>= Task01.isValidAsciiText
-      Assert.equal true =<< (liftEffect check)
-    test "[-1,2,3] is not valid ASCII text but (-1) is concerced into a UInt" do
-      let check = makeUint8Array [ -1, 2, 3 ] >>= Task01.isValidAsciiText -- 
-      Assert.equal true =<< (liftEffect check)
-    test "[128,222,233] is not valid ASCII text" do
-      let check = makeUint8Array [ 128, 222, 233 ] >>= Task01.isValidAsciiText
-      Assert.equal false =<< (liftEffect check)
+  let
+    testFn = Task01.isValidAsciiText
+    checkArr arr = makeUint8Array arr >>= testFn # liftEffect
+  in
+    suite "Task01 test suite for isValidAsciiText" do
+      test "should     validate for the case [1,2,3]" do
+        Assert.equal true =<< checkArr [ 1, 2, 3 ]
+      test "should     validate for the case [-1,2,3]; (-1) cast to UInt" do
+        Assert.equal true =<< checkArr [ -1, 2, 3 ]
+      test "should NOT validate for the case [128,222,233]" do
+        Assert.equal false =<< checkArr [ 128, 222, 233 ]
 
 test_toAsciiString :: Free TestF Unit
 test_toAsciiString =
-  suite "Task01 test suite for toAsciiString" do
-    test "[97,98,99] is valid ASCII text" do
-      let check = makeUint8Array [ 97, 98, 99 ] >>= Task01.toAsciiString
-      Assert.equal (Just "abc") =<< (liftEffect check)
-    test "[128,222,233] is not valid ASCII text" do
-      let check = makeUint8Array [ 128, 228, 238 ] >>= Task01.toAsciiString
-      Assert.equal Nothing =<< (liftEffect check)
+  let
+    testFn = Task01.toAsciiString
+    checkArr arr = makeUint8Array arr >>= testFn # liftEffect
+  in
+    suite "Task01 test suite for toAsciiString" do
+      test "should     validate for the case [97,98,99]" do
+        Assert.equal (Just "abc") =<< checkArr [ 97, 98, 99 ]
+      test "should NOT validate for the case [128,222,233]" do
+        Assert.equal Nothing =<< checkArr [ 128, 228, 238 ]

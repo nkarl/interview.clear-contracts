@@ -1,6 +1,7 @@
 module Tasks.Task03 where
 
 import Data.ArrayBuffer.ArrayBuffer (empty)
+import Data.ArrayBuffer.DataView (set)
 import Tasks.Task01 (AsciiText)
 
 {- NOTE:
@@ -59,7 +60,10 @@ import Tasks.Task01 (AsciiText)
 
 {- TODO:
   1. [ ] compose `insert`
+      - set
+      - setTyped: stores multiple values in an ArrayView, reading input from a second ArrayView
+      - slice: copy a chunk of an ArrayView between [i,j] into a new Buffer
 -}
 
-insert :: AsciiText -> Int -> AsciiText -> AsciiText
-insert = empty
+--insert :: AsciiText -> Int -> AsciiText -> AsciiText
+--insert = empty
