@@ -28,13 +28,14 @@ import Tasks.Task01 (AsciiText)
 -}
 
 {- TODO:
-  1. [x] define a folding action to check that the correctly paired parentheses reduce to 0.
+  1. [ ] define a function that check for A SINGLE PAIR of either parentheses or brackets.
       - [x] implement for `()` first.
       - [x] incorporate `[]`.
       - [x] write tests.
-  2. [ ] define a new function the extends the implemtation to check for 2 cases `(]` and `[)`.
-      - [ ] write tests.
-  3. [ ] describing 3 properties
+  2. [x] define a new function the extends the implemtation to check for 2 cases `(]` and `[)`.
+      - [x] write tests.
+  3. [x] define a folding action to check that the correctly paired parentheses reduce to 0.
+  4. [ ] describing 3 properties
       - [ ] isomorphic? commutative? properties of input?
 -}
 
