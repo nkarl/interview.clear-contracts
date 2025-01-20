@@ -2,6 +2,13 @@ module Tasks.Task02 where
 
 import Prelude
 
+import Data.ArrayBuffer.Typed (foldl)
+import Data.Generic.Rep (class Generic)
+import Data.Show.Generic (genericShow)
+import Data.UInt (UInt, toInt)
+import Effect (Effect)
+import Tasks.Task01 (AsciiText)
+
 {- NOTE:
 1. Write a function that validates whether the `AsciiText` is correctly parenthesized. 
    Parentheses to take into account are `()` AND `[]`. There can only be a single pair 
@@ -21,31 +28,57 @@ import Prelude
 -}
 
 {- TODO:
-  1. [ ] define a folding action to check that the correctly paired parentheses reduce to 0.
-      - [ ] implement for `()` first.
-      - [ ] incorporate `[]`.
+  1. [x] define a folding action to check that the correctly paired parentheses reduce to 0.
+      - [x] implement for `()` first.
+      - [x] incorporate `[]`.
       - [ ] write tests.
-  2. [ ] define a new function the extends the implemtation to check for 2 cases `(]` and `[)`.:w
+  2. [ ] define a new function the extends the implemtation to check for 2 cases `(]` and `[)`.
       - [ ] write tests.
   3. [ ] describing 3 properties
-    - [ ] isomorphic? commutative? properties of input?
+      - [ ] isomorphic? commutative? properties of input?
 -}
 
-{--
-  data Enclosure
-    = PAREN_LEFT
-    | PAREN_RIGHT
-    | BRACKET_LEFT
-    | BRACKET_RIGHT
-    deriving (Show, Eq)
+data Enclosure
+  = PAREN_LEFT
+  | PAREN_RIGHT
+  | BRACK_LEFT
+  | BRACK_RIGHT
+  | NO_SUPPORT
 
-  isCorrectlyParenthesized = 0 == validPairs '[]' == validPairs '()'
-    where
-      validPairs = foldl check 0
-      check a count
-        | isEnclosure a == PAREN_LEFT = count + 1
-        | isEnclosure a == PAREN_RIGHT = count - 1
-        | otherwise = count
-  isEnclosureSymbol :: UInt -> Enclosure
---}
+derive instance genericEnclosure :: Generic Enclosure _
 
+derive instance eqEnclosure :: Eq Enclosure
+
+instance showEnclosure :: Show Enclosure where
+  show = genericShow
+
+matchSymbol :: UInt -> Enclosure
+matchSymbol = toInt >>> case _ of
+  40 -> PAREN_LEFT -- `(`
+  41 -> PAREN_RIGHT -- `)`
+  91 -> BRACK_LEFT -- `[`
+  93 -> BRACK_RIGHT -- `]`
+  _ -> NO_SUPPORT
+
+type State =
+  { parenCount :: Int
+  , brackCount :: Int
+  }
+
+isCorrectlyParenthesized :: AsciiText -> Effect Boolean
+isCorrectlyParenthesized arr = do
+  let
+    z0 = { parenCount: 0, brackCount: 0 }
+  res <- validPairs z0 arr
+  pure $ res == z0
+
+  where
+
+  validPairs = foldl (flip check)
+
+  check a s@{ parenCount, brackCount }
+    | matchSymbol a == PAREN_LEFT = { parenCount: parenCount + 1, brackCount }
+    | matchSymbol a == PAREN_RIGHT = { parenCount: parenCount - 1, brackCount }
+    | matchSymbol a == BRACK_LEFT = { parenCount, brackCount: brackCount + 1 }
+    | matchSymbol a == BRACK_RIGHT = { parenCount, brackCount: brackCount - 1 }
+    | otherwise = s
