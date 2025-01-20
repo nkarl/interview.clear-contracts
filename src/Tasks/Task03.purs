@@ -1,5 +1,31 @@
 module Tasks.Task03 where
 
+import Data.ArrayBuffer.ArrayBuffer (empty)
+import Tasks.Task01 (AsciiText)
+
+{- NOTE:
+1. Define a function `insert` that takes an `AsciiText` from Task 1 (the
+   'target'), an `Int` (the insert position) and another `AsciiText` (the
+   thing to be inserted) and produces another `AsciiText` where all data at any
+   (zero-based) index in the result less than the insert position come from the
+   'target', followed by all the data in the thing to be inserted, followed by
+   what remains of the 'target' (if anything). Handle failures in any way you
+   see suitable.
+2. Describe a property (in the sense of equational reasoning) that `insert` from
+   1 should have. Write tests to show that your implementation in 1 has that
+   property.
+3. Explain why `insert` is inefficient in the case when we have to do many of
+   them in a row.
+4. Describe and define an auxilliary data structure designed to allow many uses
+   of `insert` (or an equivalent operation) efficiently. Also define a way of
+   converting this auxilliary data structure back into an `AsciiText`. Write
+   tests to show that its corresponding operation matches `insert`.
+5. Define a benchmark showing that your optimized version from 4 provides an
+   actual improvement over the original function from 1. Justify, and use,
+   realistic data sizes and inputs. Execute the benchmark and show the results
+   as part of your answer.
+-}
+
 {-
   TASK 3
 
@@ -31,3 +57,9 @@ module Tasks.Task03 where
   Use `hyperfine` to benchmark performance.
 -}
 
+{- TODO:
+  1. [ ] compose `insert`
+-}
+
+insert :: AsciiText -> Int -> AsciiText -> AsciiText
+insert = empty
