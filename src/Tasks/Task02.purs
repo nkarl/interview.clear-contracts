@@ -95,8 +95,8 @@ isCorrectlyParenthesizedWeird arr = do
   validPairs = foldl (flip check)
 
   check a s@{ parenCount, brackCount }
-    | matchSymbol a == PAREN_LEFT = { parenCount: parenCount + 1, brackCount }
-    | matchSymbol a == BRACK_RIGHT = { parenCount: parenCount - 1, brackCount }
-    | matchSymbol a == BRACK_LEFT = { parenCount, brackCount: brackCount + 1 }
-    | matchSymbol a == PAREN_RIGHT = { parenCount, brackCount: brackCount - 1 }
+    | matchSymbol a == PAREN_LEFT = { parenCount: parenCount + 1, brackCount } -- (
+    | matchSymbol a == BRACK_RIGHT = { parenCount: parenCount - 1, brackCount } -- ]
+    | matchSymbol a == BRACK_LEFT = { parenCount, brackCount: brackCount + 1 } -- [
+    | matchSymbol a == PAREN_RIGHT = { parenCount, brackCount: brackCount - 1 } -- )
     | otherwise = s

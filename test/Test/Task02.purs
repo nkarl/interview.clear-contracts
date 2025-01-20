@@ -59,12 +59,12 @@ test_isCorrectlyParenthesizedWeird =
     test "[40,222,233,41] is NOT correctly paired `(.+)`" do
       let check = makeUint8Array [ 40, 222, 233, 41, 128 ] >>= Task02.isCorrectlyParenthesizedWeird
       Assert.equal false =<< (liftEffect check)
-    test "[40,40,222,233,41] is NOT correctly paired `[.+)`" do
-      let check = makeUint8Array [ 40, 40, 222, 233, 41 ] >>= Task02.isCorrectlyParenthesizedWeird
+    test "[91,222,233,41] is NOT correctly paired `[.+)`" do
+      let check = makeUint8Array [ 91, 222, 233, 41 ] >>= Task02.isCorrectlyParenthesizedWeird
       Assert.equal true =<< (liftEffect check)
     test "[91,222,233 93] is NOT correctly paired `[.+]`" do
       let check = makeUint8Array [ 91, 222, 233, 93 ] >>= Task02.isCorrectlyParenthesizedWeird
       Assert.equal false =<< (liftEffect check)
-    test "[91,222,233,93,93] is correctly paired `(.+]`" do
-      let check = makeUint8Array [ 91, 222, 233, 93, 93 ] >>= Task02.isCorrectlyParenthesizedWeird
+    test "[40,222,233,93,93] is correctly paired `(.+]`" do
+      let check = makeUint8Array [ 40, 222, 233, 93 ] >>= Task02.isCorrectlyParenthesizedWeird
       Assert.equal true =<< (liftEffect check)
