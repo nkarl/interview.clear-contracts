@@ -2,11 +2,10 @@ module Tasks.Task03 where
 
 import Prelude
 
-import Data.Array (concat)
 import Data.ArrayBuffer.ArrayBuffer (empty)
 import Data.ArrayBuffer.Cast (toUint8Array)
-import Data.ArrayBuffer.DataView (set, whole)
-import Data.ArrayBuffer.Typed (fromArray, length, setTyped, toArray, slice)
+import Data.ArrayBuffer.DataView (whole)
+import Data.ArrayBuffer.Typed (fromArray, length, setTyped, slice)
 import Data.Maybe (Maybe(..))
 import Data.UInt (fromInt)
 import Effect (Effect)
