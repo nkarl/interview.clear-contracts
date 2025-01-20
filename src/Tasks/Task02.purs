@@ -82,3 +82,21 @@ isCorrectlyParenthesized arr = do
     | matchSymbol a == BRACK_LEFT = { parenCount, brackCount: brackCount + 1 }
     | matchSymbol a == BRACK_RIGHT = { parenCount, brackCount: brackCount - 1 }
     | otherwise = s
+
+isCorrectlyParenthesizedWeird :: AsciiText -> Effect Boolean
+isCorrectlyParenthesizedWeird arr = do
+  let
+    z0 = { parenCount: 0, brackCount: 0 }
+  res <- validPairs z0 arr
+  pure $ res == z0
+
+  where
+
+  validPairs = foldl (flip check)
+
+  check a s@{ parenCount, brackCount }
+    | matchSymbol a == PAREN_LEFT = { parenCount: parenCount + 1, brackCount }
+    | matchSymbol a == BRACK_RIGHT = { parenCount: parenCount - 1, brackCount }
+    | matchSymbol a == BRACK_LEFT = { parenCount, brackCount: brackCount + 1 }
+    | matchSymbol a == PAREN_RIGHT = { parenCount, brackCount: brackCount - 1 }
+    | otherwise = s
