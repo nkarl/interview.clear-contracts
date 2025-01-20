@@ -1,7 +1,15 @@
 module Tasks.Task03 where
 
+import Prelude
+
+import Data.Array (concat)
 import Data.ArrayBuffer.ArrayBuffer (empty)
-import Data.ArrayBuffer.DataView (set)
+import Data.ArrayBuffer.Cast (toUint8Array)
+import Data.ArrayBuffer.DataView (set, whole)
+import Data.ArrayBuffer.Typed (fromArray, length, setTyped, toArray, slice)
+import Data.Maybe (Maybe(..))
+import Data.UInt (fromInt)
+import Effect (Effect)
 import Tasks.Task01 (AsciiText)
 
 {- NOTE:
@@ -63,6 +71,7 @@ import Tasks.Task01 (AsciiText)
       - set
       - setTyped: stores multiple values in an ArrayView, reading input from a second ArrayView
       - slice: copy a chunk of an ArrayView between [i,j] into a new Buffer
+      - empty
 -}
 
 {-
@@ -76,8 +85,25 @@ import Tasks.Task01 (AsciiText)
           of the 'target' (if anything). Handle failures in any way you see suitable.
 -}
 
-type Target = AsciiText
-type Source = AsciiText
+type Inserted = AsciiText
+type Idx = Int
+type Insertee = AsciiText
 type Result = AsciiText
---insert :: Target -> Int -> Source -> Result
---insert = empty
+
+makeAsciiBuffer :: Int -> Effect AsciiText
+makeAsciiBuffer size =
+  (whole <$> empty size) >>= toUint8Array
+
+makeArrayView :: Array Int -> Effect (AsciiText)
+makeArrayView = fromArray <<< map fromInt
+
+insert :: Inserted -> Idx -> Insertee -> Effect Result
+insert inserter idx insertee = do
+  prefix <- slice 0 idx insertee
+  _infix <- slice 0 (length inserter) inserter
+  suffix <- slice idx (length insertee) insertee
+  new <- makeAsciiBuffer (length inserter + length insertee)
+  _ <- setTyped new (Just 0) $ prefix
+  _ <- setTyped new (Just idx) $ _infix
+  _ <- setTyped new (Just $ idx + length inserter) $ suffix
+  pure new
