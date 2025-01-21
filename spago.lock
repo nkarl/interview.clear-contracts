@@ -13,6 +13,7 @@
             "foldable-traversable",
             "lists",
             "maybe",
+            "minibench",
             "prelude",
             "strings",
             "stringutils",
@@ -52,6 +53,7 @@
             "lcg",
             "lists",
             "maybe",
+            "minibench",
             "newtype",
             "nonempty",
             "nullable",
@@ -1034,6 +1036,20 @@
         "invariant",
         "newtype",
         "prelude"
+      ]
+    },
+    "minibench": {
+      "type": "registry",
+      "version": "4.0.1",
+      "integrity": "sha256-7jyxcklZI49q/otYvMV4f9YnJwEqQ3Me5buhDwAOydw=",
+      "dependencies": [
+        "console",
+        "effect",
+        "integers",
+        "numbers",
+        "partial",
+        "prelude",
+        "refs"
       ]
     },
     "newtype": {

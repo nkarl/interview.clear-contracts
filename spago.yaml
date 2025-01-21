@@ -9,6 +9,7 @@ package:
     - foldable-traversable
     - lists
     - maybe
+    - minibench
     - prelude
     - strings
     - stringutils
