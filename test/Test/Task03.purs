@@ -55,6 +55,8 @@ test_insert =
 
 bench_insert1000Times :: Effect Unit
 bench_insert1000Times = do
+  {- TODO: need a StateT monad transformer to keep the latest copy of the new buffer.
+  -}
   let
     makeView arr = makeArrayView arr # liftEffect
 

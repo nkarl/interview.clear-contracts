@@ -80,9 +80,9 @@ hasCorrectEnclosurePairs arr = do
 
   where
 
-  validPairs = foldl (flip check)
+  validPairs = foldl (check)
 
-  check a s@{ parenCount, brackCount }
+  check s@{ parenCount, brackCount } a
     | matchSymbol a == PAREN_LEFT = { parenCount: parenCount + 1, brackCount }
     | matchSymbol a == PAREN_RIGHT = { parenCount: parenCount - 1, brackCount }
     | matchSymbol a == BRACK_LEFT = { parenCount, brackCount: brackCount + 1 }
